@@ -19,8 +19,7 @@ $router->any("/", function() {
 })->accept(array('application/json' => 'json_encode'));
 
 $router->any("/auth/authenticate", function() {
-	//header('HTTP/1.1 403 Forbidden');
-	//exit;
+    try{
 	$user = new stdClass();
 	$user->name = 'Giovani Silveira';
 	$user->nascimento = "1984-01-15";
@@ -28,16 +27,26 @@ $router->any("/auth/authenticate", function() {
 
 	$r = var_export($_REQUEST, TRUE);
 	if (empty($_REQUEST['email'])) {
-		return array( 
-			'error' => true,
-			'errorMessage' => 'Não encontrado: ' . $r . ' method: ' . $_SERVER['REQUEST_METHOD']
-		);
+		throw new RuntimeException('Não encontrado: ' . $r . ' method: ' . $_SERVER['REQUEST_METHOD']);
 	}
 
 	return array(
 		'token' => uniqid(),
 		'user'  => $user
 	);
+    }catch(Exception $e){
+	header("HTTP/1.1 404 Not Found");
+	return array( 
+		'error' => true,
+		'errorMessage' => $e->getMessage()
+	);
+    }
+})->accept(array('application/json' => 'json_encode'));
+
+
+$router->any("/resource", function() {
+	header("HTTP/1.1 404 NO CONTENT");
+	return array("error" => "Recurso não encontrado!");
 })->accept(array('application/json' => 'json_encode'));
 
 
