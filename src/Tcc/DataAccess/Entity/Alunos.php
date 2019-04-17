@@ -1,7 +1,7 @@
 <?php
 namespace Tcc\DataAccess\Entity;
 
-class Alunos
+class Alunos implements \JsonSerializable
 {
     private $cpf;
     private $nome;
@@ -183,12 +183,13 @@ class Alunos
     public function setEmail($email)
     {
         $email = filter_var($email, FILTER_SANITIZE_STRING);
-
-        if ((strlen($email) < 1) || (strlen($email) > 200))
-            throw new \InvalidArgumentException("O número de dígitos informados para o email é inválido.");
         
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) 
             throw new \InvalidArgumentException(sprintf("'%s' é um email inválido.", print_r($email, true)));
+
+        if ((strlen($email) < 1) || (strlen($email) > 200))
+            throw new \InvalidArgumentException("O número de dígitos informados para o email é inválido.");
+
 
         $this->email = trim($email);
 
@@ -211,6 +212,9 @@ class Alunos
     public function setSenha($senha)
     {
         $senha = filter_var($senha, FILTER_SANITIZE_STRING);
+
+        if (empty($senha))
+            throw new \InvalidArgumentException("A senha não pode ser vazia.");
 
         if ((strlen($senha) < 1) || (strlen($senha) > 40))
             throw new \InvalidArgumentException("O número de dígitos informados para a senha é inválido.");
@@ -238,5 +242,18 @@ class Alunos
         $this->token = trim($token);
 
         return $this;
+    }
+
+    public function jsonSerialize() {
+        return ['cpf' => $this->cpf,
+            'nome'=>$this->nome,
+            'endereco'=>$this->endereco,
+            'uf'=>$this->uf,
+            'municipio'=>$this->municipio,
+            'telefone'=>$this->telefone,
+            'email'=>$this->email,
+            'senha'=>$this->senha,
+            'token'=>$this->token
+        ];
     }
 }
