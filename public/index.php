@@ -2,7 +2,14 @@
 include_once 'bootstrap.php';
 
 use Respect\Rest\Router;
+use Tcc\Resource\Registry\Registry as Registry;
+use Tcc\DataAccess\DAO\DAOFactory as DAOFactory;
 
+/**
+ * Registra objetos de uso comum.
+ */
+$registry = Registry::getInstance();
+$registry->addKey("DAOFactory", new DAOFactory());
 
 /**
  * Router Config
@@ -13,6 +20,9 @@ $router->isAutoDispatched = false;
 /**
  * Definição das Rotas da aplicação
  */
+
+$router->any("/alunos/", "Tcc\Controllers\AlunosController")->accept(array('application/json' => 'json_encode'));
+
 $router->any("/", function() {
 	$r = var_export($_POST, TRUE);
 	return array("ok", $r);
