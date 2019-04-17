@@ -7,9 +7,12 @@ use Tcc\DataAccess\Entity\Alunos as Alunos;
 class AlunosDAO extends GenericDAO
 {
     public function filter($email, $senha) {
+        if (!empty($senha))
+            $senha = sha1($senha.HASH_SENHA);
+            
         $aluno = new Alunos();
         $aluno->setEmail($email)
-        ->setSenha(sha1($senha.HASH_SENHA));
+        ->setSenha($senha);
 
         $stm = $this->pdo->prepare('
             select * from alunos
