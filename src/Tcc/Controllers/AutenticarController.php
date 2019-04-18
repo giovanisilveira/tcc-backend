@@ -14,6 +14,9 @@ class AutenticarController  extends AbstractController implements Routable
             $alunosDAO = $DAOFactory->createAlunosDAO();
             $alunos = $alunosDAO->filter($_REQUEST['email'], $_REQUEST['senha']);
 
+            $alunos[0]->setToken($this->gerarToken());
+            $alunosDAO->save($alunos[0]);
+
             if (empty($alunos))
                 throw new \RuntimeException('Aluno não encontrado.');
 
@@ -24,5 +27,9 @@ class AutenticarController  extends AbstractController implements Routable
                 'errorMessage' => $e->getMessage()
             );
         }
+    }
+
+    private function gerarToken() {
+        return sha1(uniqid());
     }
 }
