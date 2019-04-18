@@ -90,7 +90,7 @@ class AlunosDAO extends GenericDAO
 
     public function update(Alunos $aluno) {
         $stm = $this->pdo->prepare('
-            update clientes
+            update alunos
                 set
                 nome            = :nome,
                 endereco        = :endereco,
