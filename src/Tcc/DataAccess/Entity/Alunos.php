@@ -213,11 +213,8 @@ class Alunos implements \JsonSerializable
     {
         $senha = filter_var($senha, FILTER_SANITIZE_STRING);
 
-        if (empty($senha))
-            throw new \InvalidArgumentException("A senha não pode ser vazia.");
-
-        if ((strlen($senha) < 1) || (strlen($senha) > 40))
-            throw new \InvalidArgumentException("O número de dígitos informados para a senha é inválido.");
+        if (empty($senha) || ((strlen($senha) < 1) || (strlen($senha) > 40)))
+            throw new \InvalidArgumentException("A senha informada é inválida.");
 
         $this->senha = trim($senha);
 
