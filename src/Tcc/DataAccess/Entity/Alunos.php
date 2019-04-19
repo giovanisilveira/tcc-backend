@@ -107,7 +107,14 @@ class Alunos implements \JsonSerializable
      */ 
     public function setUf($uf)
     {
+        $estados = array('AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 
+        'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO');
+
         $uf = filter_var($uf, FILTER_SANITIZE_STRING);
+        $uf = strtoupper($uf);
+
+        if (!in_array($uf, $estados))
+            throw new \InvalidArgumentException("Informe uma UF válida.");
 
         if ((strlen($uf) < 1) || (strlen($uf) > 2))
             throw new \InvalidArgumentException("O número de dígitos informados para a UF é inválido.");
