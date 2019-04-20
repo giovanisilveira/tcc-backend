@@ -24,6 +24,4 @@ $router->isAutoDispatched = false;
 $router->post("/alunos/", "Tcc\Controllers\AlunosController")->accept(array('application/json' => 'json_encode'));
 $router->get("/autenticar/", "Tcc\Controllers\AutenticarController")->accept(array('application/json' => 'json_encode'));
 
-$router->get("/mobileapp", "Tcc\Controllers\MobileAppController");
-
 print $router->run();
